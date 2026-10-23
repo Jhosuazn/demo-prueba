@@ -1,0 +1,10 @@
+{
+  "name": "demo-prueba-github-actions",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Demostración académica de CI/CD con pruebas y GitHub Pages",
+  "scripts": {
+    "test": "node --test"
+  }
+}

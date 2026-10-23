@@ -1,0 +1,51 @@
+name: CI-CD - Demo Prueba
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pruebas:
+    name: CI - Pruebas automáticas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v6
+      - name: Configurar Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Ejecutar las seis pruebas
+        run: npm test
+
+  despliegue:
+    name: CD - Publicar en GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: pruebas
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v6
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Subir archivos de la web
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: './site'
+      - name: Publicar sitio web
+        id: deployment
+        uses: actions/deploy-pages@v4
