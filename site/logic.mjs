@@ -3,5 +3,5 @@ export function sumar(a, b) {
   if (typeof a !== 'number' || typeof b !== 'number' || !Number.isFinite(a) || !Number.isFinite(b)) {
     throw new TypeError('Ingresa dos números válidos.');
   }
-  return Math.round((a - b + Number.EPSILON) * 100) / 100;
+  return Math.round((a + b + Number.EPSILON) * 100) / 100;
 }
